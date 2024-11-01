@@ -22,13 +22,7 @@ The Supplier Management System is a command-line interface (CLI) tool designed t
     ├── cli.py
     ├── debug.py
     └── helpers.py
-```
-
-Note: The directory also includes two files named `CONTRIBUTING.md` and
-`LICENSE.md` that are specific to Flatiron's curriculum. You can disregard or
-delete the files if you want.
-
----
+``
 
 ## Setting up the Environment
 
