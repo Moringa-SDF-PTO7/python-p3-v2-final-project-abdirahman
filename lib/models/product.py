@@ -1,8 +1,8 @@
-# lib/models/product.py
+
 from . import CURSOR, CONN
 
 class Product:
-    def __init__(self, product_id, name, price, quantity, supplier_id):
+    def __init__(self, product_id=None, name="", price=0.0, quantity=0, supplier_id=None):
         self.product_id = product_id
         self.name = name
         self.price = price
@@ -11,12 +11,12 @@ class Product:
 
     @classmethod
     def create_table(cls):
-        """Create the products table if it doesn't exist."""
+       
         CURSOR.execute('''
             CREATE TABLE IF NOT EXISTS products (
-                product_id INTEGER PRIMARY KEY,
+                product_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
-                price REAL,
+                price REAL NOT NULL,
                 quantity INTEGER,
                 supplier_id INTEGER,
                 FOREIGN KEY (supplier_id) REFERENCES suppliers(supplier_id)
@@ -25,7 +25,7 @@ class Product:
         CONN.commit()
 
     def save(self):
-        """Save a new product to the database."""
+       
         CURSOR.execute('''
             INSERT INTO products (name, price, quantity, supplier_id)
             VALUES (?, ?, ?, ?)
@@ -34,16 +34,25 @@ class Product:
 
     @classmethod
     def find_by_id(cls, product_id):
-        """Find a product by ID."""
+       
         CURSOR.execute('SELECT * FROM products WHERE product_id = ?', (product_id,))
         row = CURSOR.fetchone()
         return cls(*row) if row else None
-    
+
     @classmethod
     def all(cls):
-        """Fetch all products from the database."""
+       
         CURSOR.execute("SELECT * FROM products")
         rows = CURSOR.fetchall()
-        products = [cls(*row) for row in rows]
-        return products
+        return [cls(*row) for row in rows]
 
+    def update(self):
+        CURSOR.execute('''
+            UPDATE products SET name = ?, price = ?, quantity = ?, supplier_id = ?
+            WHERE product_id = ?
+        ''', (self.name, self.price, self.quantity, self.supplier_id, self.product_id))
+        CONN.commit()
+
+    def delete(self):
+        CURSOR.execute('DELETE FROM products WHERE product_id = ?', (self.product_id,))
+        CONN.commit()

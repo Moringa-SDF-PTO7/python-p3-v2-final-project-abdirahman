@@ -1,4 +1,4 @@
-# lib/models/supplier.py
+
 from . import CURSOR, CONN
 
 class Supplier:
@@ -10,19 +10,19 @@ class Supplier:
 
     @classmethod
     def create_table(cls):
-        """Create the suppliers table if it doesn't exist."""
+        
         CURSOR.execute('''
             CREATE TABLE IF NOT EXISTS suppliers (
-                supplier_id INTEGER PRIMARY KEY,
+                supplier_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
-                contact_information TEXT,
-                location TEXT
+                contact_information INT,
+                location VARCHARS
             )
         ''')
         CONN.commit()
 
     def save(self):
-        """Save a new supplier to the database."""
+        
         CURSOR.execute('''
             INSERT INTO suppliers (name, contact_information, location)
             VALUES (?, ?, ?)
@@ -31,18 +31,25 @@ class Supplier:
 
     @classmethod
     def find_by_id(cls, supplier_id):
-        """Find a supplier by ID."""
+        
         CURSOR.execute('SELECT * FROM suppliers WHERE supplier_id = ?', (supplier_id,))
         row = CURSOR.fetchone()
         return cls(*row) if row else None
-    
+
     @classmethod
     def all(cls):
-        """Fetch all suppliers from the database."""
+       
         CURSOR.execute("SELECT * FROM suppliers")
         rows = CURSOR.fetchall()
-        suppliers = [cls(*row) for row in rows]  # assuming __init__ matches the table structure
-        return suppliers
-    
+        return [cls(*row) for row in rows]
 
-    # Additional methods for updating and deleting can be added here
+    def update(self):
+        CURSOR.execute('''
+            UPDATE suppliers SET name = ?, contact_information = ?, location = ?
+            WHERE supplier_id = ?
+        ''', (self.name, self.contact_information, self.location, self.supplier_id))
+        CONN.commit()
+
+    def delete(self):
+        CURSOR.execute('DELETE FROM suppliers WHERE supplier_id = ?', (self.supplier_id,))
+        CONN.commit()

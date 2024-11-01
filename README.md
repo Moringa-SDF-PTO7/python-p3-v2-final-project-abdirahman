@@ -23,6 +23,13 @@ Take a look at the directory structure:
     ├── models
     │   ├── __init__.py
     │   └── model_1.py
+    lib/models/
+    ├── __init__.py
+    ├── supplier.py
+    ├── product.py
+    ├── customer.py
+    ├── order.py
+    └── order_detail.py
     ├── cli.py
     ├── debug.py
     └── helpers.py
