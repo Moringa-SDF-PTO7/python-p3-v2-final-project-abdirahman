@@ -1,20 +1,12 @@
 # Phase 3 CLI+ORM Project Template
 
-## Learning Goals
+# Supplier Management System
 
-- Discuss the basic directory structure of a CLI.
-- Outline the first steps in building a CLI.
+## Overview
 
----
+The Supplier Management System is a command-line interface (CLI) tool designed to manage suppliers, products, customers, orders, and order details. This project is implemented using an Object-Relational Mapping (ORM) approach to handle database interactions and follows a modular design for easy extension and maintenance. The system allows users to perform CRUD (Create, Read, Update, Delete) operations on all entities and ensures data consistency with foreign keys and validation checks.
 
-## Introduction
-
-You now have a basic idea of what constitutes a CLI. Fork and clone this lesson
-for a project template for your CLI.
-
-Take a look at the directory structure:
-
-```console
+## Directory Structure
 .
 ├── Pipfile
 ├── Pipfile.lock
@@ -22,14 +14,11 @@ Take a look at the directory structure:
 └── lib
     ├── models
     │   ├── __init__.py
-    │   └── model_1.py
-    lib/models/
-    ├── __init__.py
-    ├── supplier.py
-    ├── product.py
-    ├── customer.py
-    ├── order.py
-    └── order_detail.py
+    │   ├── supplier.py
+    │   ├── product.py
+    │   ├── customer.py
+    │   ├── order.py
+    │   └── order_detail.py
     ├── cli.py
     ├── debug.py
     └── helpers.py
@@ -41,35 +30,40 @@ delete the files if you want.
 
 ---
 
-## Generating Your Environment
+## Setting up the Environment
 
-You might have noticed in the file structure- there's already a Pipfile!
+## Cloning the repository
 
-Install any additional dependencies you know you'll need for your project by
-adding them to the `Pipfile`. Then run the commands:
+git clone git@github.com:Moringa-SDF-PTO7/python-p3-v2-final-project-abdirahman.git
+
+cd python-p3-v2-final-project-abdirahman
+
+This project uses `pipenv` for managing dependencies. To set up the environment, run the following commands:
 
 ```console
 pipenv install
 pipenv shell
-```
+
 
 ---
 
-## Generating Your CLI
+## CLI Structure and Description
 
-A CLI is, simply put, an interactive script and prompts the user and performs
-operations based on user input.
+The main CLI script is located in `lib/cli.py`. This script provides an interactive menu that allows users to manage suppliers, products, customers, orders, and order details. 
 
-The project template has a sample CLI in `lib/cli.py` that looks like this:
+### Sample CLI Menu
 
-```py
-# lib/cli.py
+When you run `python lib/cli.py`, the following options will be displayed:
 
-from helpers import (
-    exit_program,
-    helper_1
-)
+- 1. Add a new supplier
+- 2. View all products
+- 3. Update customer information
+- 4. Delete an order
+- 5. Exit
 
+The user can select options by entering the corresponding number. Each option directs to functions implemented in the `helpers.py` file, providing feedback and performing actions based on user input.
+
+To exit the program, the user can choose the 'Exit' option from the main menu.
 
 def main():
     while True:
@@ -111,69 +105,19 @@ You can run the template CLI with `python lib/cli.py`, or include the shebang
 and make it executable with `chmod +x`. The template CLI will ask for input, do
 some work, and accomplish some sort of task.
 
-Past that, CLIs can be whatever you'd like, as long as you follow the project
-requirements.
+## Data Models and ORM
 
-Of course, you will update `lib/cli.py` with prompts that are appropriate for
-your application, and you will update `lib/helpers.py` to replace `helper_1()`
-with a useful function based on the specific problem domain you decide to
-implement, along with adding other helper functions to the module.
+The data models are located in the `lib/models` folder. Each model represents a table in the database:
 
-In the `lib/models` folder, you should rename `model_1.py` with the name of a
-data model class from your specific problem domain, and add other classes to the
-folder as needed. The file `lib/models/__init__.py` has been initialized to
-create the necessary database constants. You need to add import statements to
-the various data model classes in order to use the database constants.
+- **Supplier**: `ID` (Primary Key), `Name`, `Contact`
+- **Product**: `Product_ID` (Primary Key), `Name`, `Price`, `Quantity`, `Supplier_ID` (Foreign Key)
+- **Customer**: `Customer_ID` (Primary Key), `Name`, `Contact`
+- **Order**: `Order_ID` (Primary Key), `Order_Date`, `Customer_ID` (Foreign Key)
+- **Order Detail**: `Detail_ID` (Primary Key), `Order_ID` (Foreign Key), `Product_ID` (Foreign Key), `Quantity`
 
-You are also welcome to implement a different module and directory structure.
-However, your project should be well organized, modular, and follow the design
-principal of separation of concerns, which means you should separate code
-related to:
+### Object-Relational Mapping (ORM)
 
-- User interface
-- Data persistence
-- Problem domain rules and logic
+This project uses a custom ORM implementation to map Python objects to database records. Each model has methods for create, read, update, and delete (CRUD) operations, which allow seamless interaction with the SQLite database. The ORM enforces foreign key relationships to maintain data integrity.
 
----
-
-## Updating README.md
-
-`README.md` is a Markdown file that should describe your project. You will
-replace the contents of this `README.md` file with a description of **your**
-actual project.
-
-Markdown is not a language that we cover in Flatiron's Software Engineering
-curriculum, but it's not a particularly difficult language to learn (if you've
-ever left a comment on Reddit, you might already know the basics). Refer to the
-cheat sheet in this assignments's resources for a basic guide to Markdown.
-
-### What Goes into a README?
-
-This README serves as a template. Replace the contents of this file to describe
-the important files in your project and describe what they do. Each Python file
-that you edit should get at least a paragraph, and each function should be
-described with a sentence or two.
-
-Describe your actual CLI script first, and with a good level of detail. The rest
-should be ordered by importance to the user. (Probably functions next, then
-models.)
-
-Screenshots and links to resources that you used throughout are also useful to
-users and collaborators, but a little more syntactically complicated. Only add
-these in if you're feeling comfortable with Markdown.
-
----
-
-## Conclusion
-
-A lot of work goes into a good CLI, but it all relies on concepts that you've
-practiced quite a bit by now. Hopefully this template and guide will get you off
-to a good start with your Phase 3 Project.
-
-Happy coding!
-
----
-
-## Resources
-
-- [Markdown Cheat Sheet](https://www.markdownguide.org/cheat-sheet/)
+## LICENSE
+This project is licensed under the MIT License. See the LICENSE file for more details.
